@@ -1,0 +1,86 @@
+definitions:
+  controllers.WordCountRequest:
+    properties:
+      text:
+        type: string
+    type: object
+  controllers.WordCountResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/utils.WordCount'
+        type: array
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  utils.WordCount:
+    properties:
+      count:
+        type: integer
+      word:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/health:
+    get:
+      consumes:
+      - application/json
+      description: Check if API is working
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Health Check
+      tags:
+      - health
+  /api/v1/wordcount:
+    post:
+      consumes:
+      - application/json
+      description: Count freuqent words in text
+      parameters:
+      - description: wordcountrequest
+        in: body
+        name: wordcountrequest
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.WordCountRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.WordCountResponse'
+      summary: Count freuqent words in text
+      tags:
+      - count
+  /api/v1/wordcount/file:
+    post:
+      consumes:
+      - application/json
+      description: Count freuqent words in text file (.txt file)
+      parameters:
+      - description: text file
+        in: formData
+        name: myFile
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.WordCountResponse'
+      summary: Count freuqent words in text file (.txt file)
+      tags:
+      - count
+swagger: "2.0"
